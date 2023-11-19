@@ -69,6 +69,11 @@ To use the program, on a console window launch the program with :
 
 retrieveXIQData.exe
 
+### MacOS
+To use the program, on a console window launch the program with :
+
+./retrieveXIQData.app
+
 ### Linux
 
 ./repo
