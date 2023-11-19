@@ -9,6 +9,7 @@
 ## Installation
 
 ### Windows
+![Windows Icon](https://img.icons8.com/color/48/000000/windows-10.png)
 
 1. Download `retrieveXIQData.exe`.
 - You can download the executable from [here](https://github.com/pippocasa/repo/blob/main/retrieveXIQData.exe).
@@ -66,6 +67,7 @@ go build
 ### Usage
 ### Windows 
 ![Windows Icon](https://img.icons8.com/color/48/000000/windows-10.png)
+
 To use the program, on a console window launch the program with :
 
 retrieveXIQData.exe
