@@ -64,7 +64,7 @@ cd repo
 go build
 ```
 ### Usage
-### Windows
+### Windows [Windows Icon](https://img.icons8.com/color/48/000000/windows-10.png)
 To use the program, on a console window launch the program with :
 
 retrieveXIQData.exe
