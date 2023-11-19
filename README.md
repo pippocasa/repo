@@ -29,6 +29,28 @@
     ```
 Note: If you have only one command in the "commands" array, you don't need a comma after it.
 
+### MacOS
+
+1. Download `retrieveXIQData.app`.
+- You can download the executable from [here](https://github.com/pippocasa/repo/blob/main/retrieveXIQData.app).
+2. Create a `credentials.json` file with the following structure:
+
+    ```json
+    {
+      "username": "your_username",
+      "password": "your_password",
+      "commands": [
+        "command_1",
+        "command_2",
+        "command_3",
+        // Add additional commands as needed.
+        //Ensure that the last command in the "commands" array does not have a comma after it
+      ]
+    }
+    ```
+Note: If you have only one command in the "commands" array, you don't need a comma after it.
+
+
 ### Manual Installation (for non-Windows systems)
 
 ```bash
