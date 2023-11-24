@@ -41,10 +41,10 @@ The `credentials.json` file is used to configure the authentication and executio
 Note: If you have only one command in the "commands" array, you don't need a comma after it.
 
 Fields:
-+"username": Your XIQ account username.
-+"password": Your XIQ account password.
-+"commands": An array of CLI commands to be executed on each device.
-""devices" (Optional): An array of device IP addresses. If provided, the program will only execute commands on the specified devices. If not provided, the program will use all available devices.
++ "username": Your XIQ account username.
++ "password": Your XIQ account password.
++ "commands": An array of CLI commands to be executed on each device.
++ "devices" (Optional): An array of device IP addresses. If provided, the program will only execute commands on the specified devices. If not provided, the program will use all available devices.
 
 Note: If you have only one command, device IP address, or none of them in the respective arrays, you don't need a comma after it.
 
