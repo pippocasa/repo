@@ -29,10 +29,14 @@ def read_credentials_from_file(file_path):
     try:
         with open(file_path, 'r') as file:
             credentials = json.load(file)
-            return credentials.get("username"), credentials.get("password"),credentials.get("commands",[])
+            username = credentials.get("username")
+            password = credentials.get("password")
+            commands = credentials.get("commands", [])
+            device_ids = credentials.get("devices", [])  # Set to an empty list if not present
+            return username, password, commands, device_ids
     except FileNotFoundError:
         logger.error(f"Credentials file not found: {file_path}")
-        return None, None,[]
+        return None, None, [], []  # Default values for commands and device_ids
 
 def login(username, password):
     login_url = "https://api.extremecloudiq.com/login"
@@ -109,7 +113,6 @@ def fetch_speed(device_id, hostname, headers,commands):
 
 def fetch_result(device_id, hostname, headers,commands):
     device_commands_url = f"https://api.extremecloudiq.com/devices/{device_id}/:cli"
-    #command = ['show interface eth0 | incl speed']
     device_command_response = requests.post(device_commands_url, headers=headers, json=commands)
 
     if device_command_response.status_code == 200:
@@ -122,12 +125,12 @@ def fetch_result(device_id, hostname, headers,commands):
                  if response_code == "SUCCEED":
                      output = entry["output"]
                      print(f"Device ID: {response_device_id}, Name: {hostname}, Output: {output}")
-            print("\n")  # Separate the output of different devices 
+           # print("\n")  # Separate the output of different devices 
 
 def main():
     # Configuration settings
     # Read credentials from a file
-    username, password,commands = read_credentials_from_file('credentials.json')
+    username, password, commands, device_ids = read_credentials_from_file('credentials.json')
     #commands=command.split(",")
     if username is None or password is None:
         logger.error("Failed to read credentials from the file.")
@@ -148,13 +151,32 @@ def main():
     device_list = fetch_device_list(token,headers)
     print(f"Total Devices: {len(device_list)}") 
     threads = []
-    for device_data in device_list:
-        device_id = device_data['id']
-        hostname = device_data['hostname']
-        t = threading.Thread(target=fetch_result, args=(device_id, hostname, headers, commands))
-        threads.append(t)
-        t.start()
-    # Wait for all threads to finish
+    if device_ids:  # If specific device IDs are provided in the credentials
+        # Filter devices based on the provided device IDs
+        filtered_devices = []
+        for device in device_list:
+            if device.get('ip_address') in device_ids:
+                filtered_devices.append(device)        
+        print(f"Sending commands to {len(filtered_devices)} specified devices.")
+        for device_data in filtered_devices:
+            device_function = device_data.get('device_function')
+            if device_function and device_function == "AP":
+                device_id = device_data['id']
+                hostname = device_data['hostname']
+                t = threading.Thread(target=fetch_result, args=(device_id, hostname, headers, commands))
+                threads.append(t)
+                t.start()
+    else:
+        print("No specific devices specified. Sending commands to all devices.")
+        for device_data in device_list:
+            device_function = device_data.get('device_function', None)
+            if device_function and device_function == "AP":
+                device_id = device_data['id']
+                hostname = device_data['hostname']
+                t = threading.Thread(target=fetch_result, args=(device_id, hostname, headers, commands))
+                threads.append(t)
+                t.start()
+            # Wait for all threads to finish
     for t in threads:
         t.join()
     end_time = datetime.now()
