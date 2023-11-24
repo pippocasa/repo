@@ -13,7 +13,11 @@
 
 1. Download `retrieveXIQData.exe`.
 - You can download the executable from [here](https://github.com/pippocasa/repo/blob/main/retrieveXIQData.exe).
+
+### credentials.json
 2. Create a `credentials.json` file with the following structure:
+
+The `credentials.json` file is used to configure the authentication and execution parameters for `retrieveXIQData`. Below is the structure of the `credentials.json` file:
 
     ```json
     {
@@ -25,31 +29,60 @@
         "command_3",
         // Add additional commands as needed.
         //Ensure that the last command in the "commands" array does not have a comma after it
+      ],
+     "devices": [
+       "device_ip_1",
+       "device_ip_2",
+       // Add additional device IP addresses as needed.
+       // Ensure that the last device IP address in the "devices" array does not have a comma after it
       ]
     }
     ```
 Note: If you have only one command in the "commands" array, you don't need a comma after it.
+
+Fields:
+"username": Your XIQ account username.
+"password": Your XIQ account password.
+"commands": An array of CLI commands to be executed on each device.
+"devices" (Optional): An array of device IP addresses. If provided, the program will only execute commands on the specified devices. If not provided, the program will use all available devices.
+Note: If you have only one command, device IP address, or none of them in the respective arrays, you don't need a comma after it.
+
+Example without the "devices" field (using all devices):
+    ```json
+{
+  "username": "your_username",
+  "password": "your_password",
+  "commands": [
+    "command_1",
+    "command_2",
+    "command_3"
+  ]
+}
+    ```
+Example with the "devices" field (filtering specific devices):
+    ```json
+{
+  "username": "your_username",
+  "password": "your_password",
+  "commands": [
+    "command_1",
+    "command_2",
+    "command_3"
+  ],
+  "devices": [
+    "device_ip_1",
+    "device_ip_2"
+  ]
+}
+    ```
+
 
 ### MacOS
 
 1. Download `retrieveXIQData.app`.
 - You can download the executable from [here](https://github.com/pippocasa/repo/blob/main/retrieveXIQData.app).
-2. Create a `credentials.json` file with the following structure:
+2. Create a `credentials.json` file (see above for the details) 
 
-    ```json
-    {
-      "username": "your_username",
-      "password": "your_password",
-      "commands": [
-        "command_1",
-        "command_2",
-        "command_3",
-        // Add additional commands as needed.
-        //Ensure that the last command in the "commands" array does not have a comma after it
-      ]
-    }
-    ```
-Note: If you have only one command in the "commands" array, you don't need a comma after it.
 
 
 ### Manual Installation (for non-Windows systems)
