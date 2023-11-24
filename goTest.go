@@ -21,6 +21,8 @@ type DeviceInfo struct {
 	ID       int64  `json:"id"`
 	Hostname string `json:"hostname"`
 	DeviceFunction string `json:"device_function"`
+	IPAddress string `json:"ip_address"`
+	SoftwareVersion string `json:"software_version"`
 }
 
 // Response structure for the JSON response
@@ -36,10 +38,11 @@ type Credentials struct {
 	Password string   `json:"password"`
 	File     *string  `json:"file,omitempty"`
 	Commands  []string `json:"commands"`
+        Devices  *[]string `json:"devices,omitempty"` // List of device IP addresses (optional)
 }
 
 const baseURL = "https://api.extremecloudiq.com"
-const version = "0.2" // Set the version number here
+const version = "0.3" // Set the version number here
 func readCredentials(filePath string) (Credentials, error) {
 	var credentials Credentials
 
@@ -98,21 +101,31 @@ func login(credentials Credentials) (string, error) {
 	return loginResponse.AccessToken, nil
 }
 
-func getDevices(token string, commands []string) {
+func getDevices(token string, commands []string,deviceIPs *[]string) {
         var totalDevices []DeviceInfo
         var wg sync.WaitGroup
-	devices, err := fetchDevices(token)
-	if err != nil {
-		fmt.Println("Error fetching devices:", err)
-		return 
-	}
-	// Filter devices where DeviceFunction is "AP"
-	for _, device := range devices {
-		if device.DeviceFunction == "AP" {
-			totalDevices = append(totalDevices, device)
+        devices, err := fetchDevices(token)
+        if err != nil {
+                fmt.Println("Error fetching devices:", err)
+                return
+        }
+        if deviceIPs != nil {
+		for _, device := range devices {
+			for _, ip := range *deviceIPs {
+				if device.IPAddress == ip {
+					totalDevices = append(totalDevices, device)
+					break
+				}
+			}
 		}
-	}
-
+	} else {
+        // Filter devices where DeviceFunction is "AP"
+        for _, device := range devices {
+                if device.DeviceFunction == "AP" {
+                        totalDevices = append(totalDevices, device)
+                }
+        }
+        }
 	fmt.Printf("Total Devices with DeviceFunction 'AP': %d\n", len(totalDevices))
 	concurrencyFraction := 0.2 // You can adjust this value as needed
         concurrencyLimit := int(float64(len(totalDevices)) * concurrencyFraction)
@@ -196,7 +209,6 @@ func fetchDevices(token string) ([]DeviceInfo, error) {
 		if page >= response.TotalPages {
 			break
 		}
-
 		page++
 	}
 
@@ -332,7 +344,7 @@ func main() {
 	fmt.Printf("Please wait, retrieving data %s\n",credentials.Commands)
 	// Process the response body
 	//getDevices(token, credentials.Commands)
-        getDevices(token, credentials.Commands)
+        getDevices(token, credentials.Commands, credentials.Devices)
 	// Record the end time
         endTime := time.Now()
 
