@@ -14,7 +14,7 @@
 1. Download `retrieveXIQData.exe`.
 - You can download the executable from [here](https://github.com/pippocasa/repo/blob/main/retrieveXIQData.exe).
 
-### credentials.json
+#### credentials.json
 2. Create a `credentials.json` file with the following structure:
 
 The `credentials.json` file is used to configure the authentication and execution parameters for `retrieveXIQData`. Below is the structure of the `credentials.json` file:
