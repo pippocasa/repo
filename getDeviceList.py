@@ -24,9 +24,6 @@ from datetime import datetime
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
-# Your API credentials
-#username = "extreme@schule.wallisellen.ch"
-#password = "Wlc$192wall-01"
 
 def read_credentials_from_file(file_path):
     try:
