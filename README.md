@@ -49,7 +49,7 @@ Fields:
 Note: If you have only one command, device IP address, or none of them in the respective arrays, you don't need a comma after it.
 
 Example without the "devices" field (using all devices):
-    ```json
+```json
 {
   "username": "your_username",
   "password": "your_password",
@@ -59,9 +59,9 @@ Example without the "devices" field (using all devices):
     "command_3"
   ]
 }
-    ```
+```
 Example with the "devices" field (filtering specific devices):
-    ```json
+```json
 {
   "username": "your_username",
   "password": "your_password",
@@ -75,7 +75,7 @@ Example with the "devices" field (filtering specific devices):
     "device_ip_2"
   ]
 }
-    ```
+```
 
 
 ### MacOS
